@@ -1,0 +1,521 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-08-20"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">MyMainScript</a></li><li><a href="#2">Your code here</a></li><li><a href="#3">Loading image (barbara.mat)</a></li><li><a href="#4">Down Sampling</a></li><li><a href="#5">Added noise to the image</a></li><li><a href="#6">Tuned parameters for this image</a></li><li><a href="#7">Applying patch based filter</a></li><li><a href="#8">Displaying</a></li><li><a href="#9">Applying perturbed values of sigma</a></li><li><a href="#10">Loading image (grass.mat)</a></li><li><a href="#11">Added noise to the image</a></li><li><a href="#12">Tuned parameters for this image</a></li><li><a href="#13">Applying patch based filter</a></li><li><a href="#14">Displaying</a></li><li><a href="#15">Applying perturbed values of sigma</a></li><li><a href="#16">Loading image (honeyCombReal.mat)</a></li><li><a href="#17">Added noise to the image</a></li><li><a href="#18">Tuned parameters for this image</a></li><li><a href="#19">Applying patch based filter</a></li><li><a href="#20">Displaying</a></li><li><a href="#21">Applying perturbed values of sigma</a></li></ul></div><h2 id="1">MyMainScript</h2><pre class="codeinput">tic;
+</pre><h2 id="2">Your code here</h2><h2 id="3">Loading image (barbara.mat)</h2><pre class="codeinput">im = load(<span class="string">'../data/barbara.mat'</span>);
+im = im.imageOrig;
+</pre><h2 id="4">Down Sampling</h2><pre class="codeinput">im = imgaussfilt(im,0.66);
+im = im(1:2:end,1:2:end);
+</pre><h2 id="5">Added noise to the image</h2><pre class="codeinput">noise = randn(size(im,1)) * 0.05*(max(im(:)) - min(im(:)));
+corrupted_image = max(0, im+noise);
+</pre><h2 id="6">Tuned parameters for this image</h2><pre class="codeinput">sigma = 0.83;
+fprintf(<span class="string">'Tuned sigma\n'</span>);
+sigma
+</pre><pre class="codeoutput">Tuned sigma
+
+sigma =
+
+    0.8300
+
+</pre><h2 id="7">Applying patch based filter</h2><pre class="codeinput">im_r = myPatchBasedFiltering(corrupted_image,sigma);
+
+fprintf(<span class="string">'The root mean squared distance between filtered image and the original image is\n'</span>);
+rmsd(im,im_r)
+</pre><pre class="codeoutput">Elapsed time is 156.222068 seconds.
+The root mean squared distance between filtered image and the original image is
+
+ans =
+
+  single
+
+    2.6112
+
+</pre><h2 id="8">Displaying</h2><pre class="codeinput"><span class="comment">% Displaying the Gaussian Mask</span>
+figure;
+imshow(mat2gray(fspecial(<span class="string">'gaussian'</span>, 9, 9/6)),<span class="string">'InitialMagnification'</span>,<span class="string">'fit'</span>)
+title(<span class="string">'The gaussain mask to make patches isotropic'</span>);
+colormap(gray(256));
+axis <span class="string">on</span>;
+colorbar;
+
+figure(<span class="string">"position"</span>,[100, 100, 1200, 1200]);
+<span class="comment">% Displaying the original image (down-sampled)</span>
+subplot(1,3,1),imshow(mat2gray(im));
+title(<span class="string">'Original Image'</span>);
+colormap(gray(256));
+axis <span class="string">on</span>;
+colorbar;
+
+<span class="comment">% Displaying the Corrupted Image</span>
+subplot(1,3,2),imshow(mat2gray(corrupted_image));
+title(<span class="string">'Corrupted Image'</span>);
+axis <span class="string">on</span>;
+colormap(gray(256));
+colorbar;
+
+<span class="comment">% Displaying the Filtered Image</span>
+subplot(1,3,3),imshow(mat2gray(im_r));
+title(<span class="string">'Filtered Image'</span>);
+colormap(gray(256));
+axis <span class="string">on</span>;
+colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2 id="9">Applying perturbed values of sigma</h2><pre class="codeinput">im_r = myPatchBasedFiltering(corrupted_image, sigma*0.9);
+fprintf(<span class="string">'The root mean squared distance between filtered image and the original image with 0.9*sigma\n'</span>);
+rmsd(im,im_r)
+
+im_r = myPatchBasedFiltering(corrupted_image, sigma*1.1);
+fprintf(<span class="string">'The root mean squared distance between filtered image and the original image with 1.1*sigma\n'</span>);
+rmsd(im,im_r)
+
+toc;
+
+tic;
+</pre><pre class="codeoutput">Elapsed time is 152.028253 seconds.
+The root mean squared distance between filtered image and the original image with 0.9*sigma
+
+ans =
+
+  single
+
+    2.6654
+
+Elapsed time is 160.154079 seconds.
+The root mean squared distance between filtered image and the original image with 1.1*sigma
+
+ans =
+
+  single
+
+    2.6041
+
+Elapsed time is 160.155415 seconds.
+</pre><h2 id="10">Loading image (grass.mat)</h2><pre class="codeinput">im = imread(<span class="string">'../data/grass.png'</span>);
+im = im2double(im);
+</pre><h2 id="11">Added noise to the image</h2><pre class="codeinput">noise = randn(size(im,1)) * 0.05*(max(im(:)) - min(im(:)));
+corrupted_image = max(0, im+noise);
+</pre><h2 id="12">Tuned parameters for this image</h2><pre class="codeinput">sigma = 0.0085;
+fprintf(<span class="string">'Tuned sigma\n'</span>);
+sigma
+</pre><pre class="codeoutput">Tuned sigma
+
+sigma =
+
+    0.0085
+
+</pre><h2 id="13">Applying patch based filter</h2><pre class="codeinput">im_r = myPatchBasedFiltering(corrupted_image,sigma);
+
+fprintf(<span class="string">'The root mean squared distance between filtered image and the original image is\n'</span>);
+rmsd(im,im_r)
+</pre><pre class="codeoutput">Elapsed time is 42.214423 seconds.
+The root mean squared distance between filtered image and the original image is
+
+ans =
+
+    0.0281
+
+</pre><h2 id="14">Displaying</h2><pre class="codeinput"><span class="comment">% Displaying the Gaussian Mask</span>
+figure;
+imshow(mat2gray(fspecial(<span class="string">'gaussian'</span>, 9, 9/6)),<span class="string">'InitialMagnification'</span>,<span class="string">'fit'</span>)
+title(<span class="string">'The gaussain mask to make patches isotropic'</span>);
+colormap(gray(256));
+axis <span class="string">on</span>;
+colorbar;
+
+figure(<span class="string">"position"</span>,[100, 100, 1200, 1200]);
+<span class="comment">% Displaying the original image (down-sampled)</span>
+subplot(1,3,1),imshow(mat2gray(im));
+title(<span class="string">'Original Image'</span>);
+colormap(gray(256));
+axis <span class="string">on</span>;
+colorbar;
+
+<span class="comment">% Displaying the Corrupted Image</span>
+subplot(1,3,2),imshow(mat2gray(corrupted_image));
+title(<span class="string">'Corrupted Image'</span>);
+axis <span class="string">on</span>;
+colormap(gray(256));
+colorbar;
+
+<span class="comment">% Displaying the Filtered Image</span>
+subplot(1,3,3),imshow(mat2gray(im_r));
+title(<span class="string">'Filtered Image'</span>);
+colormap(gray(256));
+axis <span class="string">on</span>;
+colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2 id="15">Applying perturbed values of sigma</h2><pre class="codeinput">im_r = myPatchBasedFiltering(corrupted_image, sigma*0.9);
+fprintf(<span class="string">'The root mean squared distance between filtered image and the original image with 0.9*sigma\n'</span>);
+rmsd(im,im_r)
+
+im_r = myPatchBasedFiltering(corrupted_image, sigma*1.1);
+fprintf(<span class="string">'The root mean squared distance between filtered image and the original image with 1.1*sigma\n'</span>);
+rmsd(im,im_r)
+
+toc;
+
+tic;
+</pre><pre class="codeoutput">Elapsed time is 40.362404 seconds.
+The root mean squared distance between filtered image and the original image with 0.9*sigma
+
+ans =
+
+    0.0284
+
+Elapsed time is 38.423979 seconds.
+The root mean squared distance between filtered image and the original image with 1.1*sigma
+
+ans =
+
+    0.0284
+
+Elapsed time is 38.424405 seconds.
+</pre><h2 id="16">Loading image (honeyCombReal.mat)</h2><pre class="codeinput">im = imread(<span class="string">'../data/honeyCombReal.png'</span>);
+im = im2double(im);
+</pre><h2 id="17">Added noise to the image</h2><pre class="codeinput">noise = randn(size(im,1)) * 0.05*(max(im(:)) - min(im(:)));
+corrupted_image = max(0, im+noise);
+</pre><h2 id="18">Tuned parameters for this image</h2><pre class="codeinput">sigma = 0.009;
+fprintf(<span class="string">'Tuned sigma\n'</span>);
+sigma
+</pre><pre class="codeoutput">Tuned sigma
+
+sigma =
+
+    0.0090
+
+</pre><h2 id="19">Applying patch based filter</h2><pre class="codeinput">im_r = myPatchBasedFiltering(corrupted_image,sigma);
+
+fprintf(<span class="string">'The root mean squared distance between filtered image and the original image is\n'</span>);
+rmsd(im,im_r)
+</pre><pre class="codeoutput">Elapsed time is 153.094931 seconds.
+The root mean squared distance between filtered image and the original image is
+
+ans =
+
+    0.0293
+
+</pre><h2 id="20">Displaying</h2><pre class="codeinput"><span class="comment">% Displaying the Gaussian Mask</span>
+figure;
+imshow(mat2gray(fspecial(<span class="string">'gaussian'</span>, 9, 9/6)),<span class="string">'InitialMagnification'</span>,<span class="string">'fit'</span>)
+title(<span class="string">'The gaussain mask to make patches isotropic'</span>);
+colormap(gray(256));
+axis <span class="string">on</span>;
+colorbar;
+
+figure(<span class="string">"position"</span>,[100, 100, 1200, 1200]);
+<span class="comment">% Displaying the original image (down-sampled)</span>
+subplot(1,3,1),imshow(mat2gray(im));
+title(<span class="string">'Original Image'</span>);
+colormap(gray(256));
+axis <span class="string">on</span>;
+colorbar;
+
+<span class="comment">% Displaying the Corrupted Image</span>
+subplot(1,3,2),imshow(mat2gray(corrupted_image));
+title(<span class="string">'Corrupted Image'</span>);
+axis <span class="string">on</span>;
+colormap(gray(256));
+colorbar;
+
+<span class="comment">% Displaying the Filtered Image</span>
+subplot(1,3,3),imshow(mat2gray(im_r));
+title(<span class="string">'Filtered Image'</span>);
+colormap(gray(256));
+axis <span class="string">on</span>;
+colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2 id="21">Applying perturbed values of sigma</h2><pre class="codeinput">im_r = myPatchBasedFiltering(corrupted_image, sigma*0.9);
+fprintf(<span class="string">'The root mean squared distance between filtered image and the original image with 0.9*sigma\n'</span>);
+rmsd(im,im_r)
+
+im_r = myPatchBasedFiltering(corrupted_image, sigma*1.1);
+fprintf(<span class="string">'The root mean squared distance between filtered image and the original image with 1.1*sigma\n'</span>);
+rmsd(im,im_r)
+
+toc;
+</pre><pre class="codeoutput">Elapsed time is 154.469586 seconds.
+The root mean squared distance between filtered image and the original image with 0.9*sigma
+
+ans =
+
+    0.0298
+
+Elapsed time is 153.965545 seconds.
+The root mean squared distance between filtered image and the original image with 1.1*sigma
+
+ans =
+
+    0.0294
+
+Elapsed time is 153.966108 seconds.
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% MyMainScript
+
+tic;
+%% Your code here
+
+
+%% Loading image (barbara.mat)
+im = load('../data/barbara.mat');
+im = im.imageOrig;
+
+%% Down Sampling
+im = imgaussfilt(im,0.66);
+im = im(1:2:end,1:2:end);
+
+%% Added noise to the image
+noise = randn(size(im,1)) * 0.05*(max(im(:)) - min(im(:)));
+corrupted_image = max(0, im+noise);
+
+%% Tuned parameters for this image
+sigma = 0.83;
+fprintf('Tuned sigma\n');
+sigma
+
+%% Applying patch based filter
+im_r = myPatchBasedFiltering(corrupted_image,sigma);
+
+fprintf('The root mean squared distance between filtered image and the original image is\n');
+rmsd(im,im_r)
+
+%% Displaying
+
+% Displaying the Gaussian Mask
+figure;
+imshow(mat2gray(fspecial('gaussian', 9, 9/6)),'InitialMagnification','fit')
+title('The gaussain mask to make patches isotropic');
+colormap(gray(256));
+axis on;
+colorbar;
+
+figure("position",[100, 100, 1200, 1200]);
+% Displaying the original image (down-sampled)
+subplot(1,3,1),imshow(mat2gray(im));
+title('Original Image');
+colormap(gray(256));
+axis on;
+colorbar;
+
+% Displaying the Corrupted Image
+subplot(1,3,2),imshow(mat2gray(corrupted_image));
+title('Corrupted Image');
+axis on;
+colormap(gray(256));
+colorbar;
+
+% Displaying the Filtered Image
+subplot(1,3,3),imshow(mat2gray(im_r));
+title('Filtered Image');
+colormap(gray(256));
+axis on;
+colorbar;
+
+
+%% Applying perturbed values of sigma
+
+im_r = myPatchBasedFiltering(corrupted_image, sigma*0.9);
+fprintf('The root mean squared distance between filtered image and the original image with 0.9*sigma\n');
+rmsd(im,im_r)
+
+im_r = myPatchBasedFiltering(corrupted_image, sigma*1.1);
+fprintf('The root mean squared distance between filtered image and the original image with 1.1*sigma\n');
+rmsd(im,im_r)
+
+toc;
+
+tic;
+%% Loading image (grass.mat)
+im = imread('../data/grass.png');
+im = im2double(im);
+
+%% Added noise to the image
+noise = randn(size(im,1)) * 0.05*(max(im(:)) - min(im(:)));
+corrupted_image = max(0, im+noise);
+
+%% Tuned parameters for this image
+sigma = 0.0085;
+fprintf('Tuned sigma\n');
+sigma
+
+%% Applying patch based filter
+im_r = myPatchBasedFiltering(corrupted_image,sigma);
+
+fprintf('The root mean squared distance between filtered image and the original image is\n');
+rmsd(im,im_r)
+
+%% Displaying
+
+% Displaying the Gaussian Mask
+figure;
+imshow(mat2gray(fspecial('gaussian', 9, 9/6)),'InitialMagnification','fit')
+title('The gaussain mask to make patches isotropic');
+colormap(gray(256));
+axis on;
+colorbar;
+
+figure("position",[100, 100, 1200, 1200]);
+% Displaying the original image (down-sampled)
+subplot(1,3,1),imshow(mat2gray(im));
+title('Original Image');
+colormap(gray(256));
+axis on;
+colorbar;
+
+% Displaying the Corrupted Image
+subplot(1,3,2),imshow(mat2gray(corrupted_image));
+title('Corrupted Image');
+axis on;
+colormap(gray(256));
+colorbar;
+
+% Displaying the Filtered Image
+subplot(1,3,3),imshow(mat2gray(im_r));
+title('Filtered Image');
+colormap(gray(256));
+axis on;
+colorbar;
+
+
+%% Applying perturbed values of sigma
+
+im_r = myPatchBasedFiltering(corrupted_image, sigma*0.9);
+fprintf('The root mean squared distance between filtered image and the original image with 0.9*sigma\n');
+rmsd(im,im_r)
+
+im_r = myPatchBasedFiltering(corrupted_image, sigma*1.1);
+fprintf('The root mean squared distance between filtered image and the original image with 1.1*sigma\n');
+rmsd(im,im_r)
+
+toc;
+
+tic;
+
+%% Loading image (honeyCombReal.mat)
+im = imread('../data/honeyCombReal.png');
+im = im2double(im);
+
+
+%% Added noise to the image
+noise = randn(size(im,1)) * 0.05*(max(im(:)) - min(im(:)));
+corrupted_image = max(0, im+noise);
+
+%% Tuned parameters for this image
+sigma = 0.009;
+fprintf('Tuned sigma\n');
+sigma
+
+%% Applying patch based filter
+im_r = myPatchBasedFiltering(corrupted_image,sigma);
+
+fprintf('The root mean squared distance between filtered image and the original image is\n');
+rmsd(im,im_r)
+
+%% Displaying
+
+% Displaying the Gaussian Mask
+figure;
+imshow(mat2gray(fspecial('gaussian', 9, 9/6)),'InitialMagnification','fit')
+title('The gaussain mask to make patches isotropic');
+colormap(gray(256));
+axis on;
+colorbar;
+
+figure("position",[100, 100, 1200, 1200]);
+% Displaying the original image (down-sampled)
+subplot(1,3,1),imshow(mat2gray(im));
+title('Original Image');
+colormap(gray(256));
+axis on;
+colorbar;
+
+% Displaying the Corrupted Image
+subplot(1,3,2),imshow(mat2gray(corrupted_image));
+title('Corrupted Image');
+axis on;
+colormap(gray(256));
+colorbar;
+
+% Displaying the Filtered Image
+subplot(1,3,3),imshow(mat2gray(im_r));
+title('Filtered Image');
+colormap(gray(256));
+axis on;
+colorbar;
+
+
+%% Applying perturbed values of sigma
+
+im_r = myPatchBasedFiltering(corrupted_image, sigma*0.9);
+fprintf('The root mean squared distance between filtered image and the original image with 0.9*sigma\n');
+rmsd(im,im_r)
+
+im_r = myPatchBasedFiltering(corrupted_image, sigma*1.1);
+fprintf('The root mean squared distance between filtered image and the original image with 1.1*sigma\n');
+rmsd(im,im_r)
+
+toc;
+##### SOURCE END #####
+--></body></html>

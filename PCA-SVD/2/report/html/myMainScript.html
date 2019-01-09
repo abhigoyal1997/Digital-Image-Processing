@@ -1,0 +1,220 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-16"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">MyMainScript</a></li><li><a href="#2">Creating the training set (Yale Database)</a></li><li><a href="#3">Processing the training set</a></li><li><a href="#4">Reconstructing the face and getting Eigenfaces</a></li><li><a href="#5">Plotting the Reconstructed Faces and EigenFaces</a></li></ul></div><h2 id="1">MyMainScript</h2><pre class="codeinput">tic;
+</pre><h2 id="2">Creating the training set (Yale Database)</h2><pre class="codeinput">dim = 192*168;
+training_set = [];
+folders = dir(<span class="string">'../../CroppedYale/'</span>);
+train_labels = [];
+train_mean = zeros(dim,1);
+folders = folders(3:end);
+folders = {folders([folders.isdir]).name};
+person = 1;
+<span class="keyword">for</span> folder = folders
+    <span class="keyword">if</span> folder == <span class="string">".DS_Store"</span>
+        <span class="keyword">continue</span>
+    <span class="keyword">end</span>
+    counter = 0;
+    folder_path = strcat(<span class="string">'../../CroppedYale/'</span>,folder);
+    folder_path = strcat(folder_path,<span class="string">"/"</span>);
+    files = dir(folder_path);
+    files = {files.name};
+    files = files(3:end);
+    <span class="keyword">for</span> item = files
+        <span class="keyword">if</span> item == <span class="string">".DS_Store"</span>
+            <span class="keyword">continue</span>
+        <span class="keyword">end</span>
+        file_name = strcat(folder_path,item);
+        image = imread(convertStringsToChars(file_name));
+        training_set = [training_set image(:)];
+        train_mean = train_mean + double(image(:));
+        train_labels = [train_labels person];
+        counter = counter + 1;
+        <span class="keyword">if</span> counter == 40
+            <span class="keyword">break</span>;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    person = person + 1;
+<span class="keyword">end</span>
+</pre><h2 id="3">Processing the training set</h2><pre class="codeinput">train_mean = train_mean/size(training_set,2);
+training_set = double(training_set) - train_mean;
+im = training_set(:,1);
+</pre><h2 id="4">Reconstructing the face and getting Eigenfaces</h2><pre class="codeinput">k_vals = [2,10,20,50,75,100,125,150,175];
+k_max = max(k_vals);
+
+EF = myEigenFaces(training_set, k_max);
+im_p = EF'*im;
+
+ims = zeros(dim,9);
+im_a = bsxfun(@times, EF, im_p');
+count = 1;
+<span class="keyword">for</span> k = k_vals
+    ims(:,count) = train_mean + sum(im_a(:,1:k),2);
+     count = count + 1;
+<span class="keyword">end</span>
+</pre><h2 id="5">Plotting the Reconstructed Faces and EigenFaces</h2><pre class="codeinput">imshow(mat2gray(reshape(im,[192,168]))); <span class="comment">% Original face</span>
+
+<span class="comment">% Reconstructed faces</span>
+count = 1;
+figure;
+<span class="keyword">for</span> k = k_vals
+    subplot(3,3,count), imshow(mat2gray(reshape(ims(:,count), [192,168])));
+    count = count+1;
+<span class="keyword">end</span>
+
+<span class="comment">% Eigenfaces corresponding to highest 25 eigenvalues</span>
+figure;
+<span class="keyword">for</span> i = 1:25
+    subplot(5,5,i), imshow(mat2gray(reshape(EF(:,i), [192,168])));
+<span class="keyword">end</span>
+
+toc;
+</pre><pre class="codeoutput">Elapsed time is 39.538695 seconds.
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% MyMainScript
+tic;
+
+%% Creating the training set (Yale Database)
+dim = 192*168;
+training_set = [];
+folders = dir('../../CroppedYale/');
+train_labels = [];
+train_mean = zeros(dim,1);
+folders = folders(3:end);
+folders = {folders([folders.isdir]).name};
+person = 1;
+for folder = folders
+    if folder == ".DS_Store"
+        continue
+    end
+    counter = 0;
+    folder_path = strcat('../../CroppedYale/',folder);
+    folder_path = strcat(folder_path,"/");
+    files = dir(folder_path);
+    files = {files.name};
+    files = files(3:end);
+    for item = files
+        if item == ".DS_Store"
+            continue
+        end
+        file_name = strcat(folder_path,item);
+        image = imread(convertStringsToChars(file_name));
+        training_set = [training_set image(:)];
+        train_mean = train_mean + double(image(:));
+        train_labels = [train_labels person];
+        counter = counter + 1;
+        if counter == 40
+            break;
+        end
+    end
+    person = person + 1;
+end
+
+%% Processing the training set
+train_mean = train_mean/size(training_set,2);
+training_set = double(training_set) - train_mean;
+im = training_set(:,1);
+
+%% Reconstructing the face and getting Eigenfaces
+k_vals = [2,10,20,50,75,100,125,150,175];
+k_max = max(k_vals);
+
+EF = myEigenFaces(training_set, k_max);
+im_p = EF'*im;
+
+ims = zeros(dim,9);
+im_a = bsxfun(@times, EF, im_p');
+count = 1;
+for k = k_vals
+    ims(:,count) = train_mean + sum(im_a(:,1:k),2);
+     count = count + 1;
+end
+
+%% Plotting the Reconstructed Faces and EigenFaces
+
+imshow(mat2gray(reshape(im,[192,168]))); % Original face
+
+% Reconstructed faces
+count = 1;
+figure;
+for k = k_vals
+    subplot(3,3,count), imshow(mat2gray(reshape(ims(:,count), [192,168])));
+    count = count+1;
+end
+
+% Eigenfaces corresponding to highest 25 eigenvalues
+figure;
+for i = 1:25
+    subplot(5,5,i), imshow(mat2gray(reshape(EF(:,i), [192,168])));
+end
+    
+toc;
+
+##### SOURCE END #####
+--></body></html>

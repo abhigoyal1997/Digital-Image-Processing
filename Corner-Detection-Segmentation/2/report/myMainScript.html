@@ -1,0 +1,173 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-09-02"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">MyMainScript</a></li><li><a href="#2">Preprocessing</a></li><li><a href="#3">Hyperparameters</a></li><li><a href="#4">Segmentation</a></li><li><a href="#5">Displaying</a></li></ul></div><h2 id="1">MyMainScript</h2><pre class="codeinput">clc;
+
+tic;
+</pre><h2 id="2">Preprocessing</h2><pre class="codeinput">I_in = double(imread(<span class="string">'../data/baboonColor.png'</span>));
+I_gaussfilt = imgaussfilt(I_in(:, :, :), 1);
+I_downsample = I_gaussfilt(1:2:end, 1:2:end, :);
+</pre><h2 id="3">Hyperparameters</h2><pre class="codeinput">h_colour = 30;
+h_space = 30;
+num_nbr = 1000;
+num_iter = 10;
+
+fprintf(<span class="string">'Tuned Gaussian kernel bandwidth for the color feature\n'</span>);
+h_colour
+fprintf(<span class="string">'Tuned Gaussian kernel bandwidth for the spatial feature\n'</span>);
+h_space
+fprintf(<span class="string">'Tuned number of iterations\n'</span>);
+num_iter
+</pre><pre class="codeoutput">Tuned Gaussian kernel bandwidth for the color feature
+
+h_colour =
+
+    30
+
+Tuned Gaussian kernel bandwidth for the spatial feature
+
+h_space =
+
+    30
+
+Tuned number of iterations
+
+num_iter =
+
+    10
+
+</pre><h2 id="4">Segmentation</h2><pre class="codeinput">I_out = myMeanShiftSegmentation(I_downsample, h_colour, h_space, num_nbr, num_iter);
+</pre><h2 id="5">Displaying</h2><pre class="codeinput">figure(<span class="string">"position"</span>,[100, 100, 1200, 2000]);
+
+<span class="comment">% Displaying the Original Image</span>
+subplot(1,2,1),imshow(mat2gray(I_downsample));
+title(<span class="string">'Original Image (downsampled)'</span>);
+axis <span class="string">on</span>;
+colormap(jet(256));
+colorbar;
+
+<span class="comment">% Displaying the Filtered Image</span>
+subplot(1,2,2),imshow(I_out);
+title(<span class="string">'Segmented Image'</span>);
+colormap(jet(256));
+axis <span class="string">on</span>;
+colorbar;
+
+
+toc;
+</pre><pre class="codeoutput">Elapsed time is 100.176635 seconds.
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% MyMainScript
+clc;
+
+tic;
+%% Preprocessing
+I_in = double(imread('../data/baboonColor.png'));
+I_gaussfilt = imgaussfilt(I_in(:, :, :), 1);
+I_downsample = I_gaussfilt(1:2:end, 1:2:end, :);
+
+%% Hyperparameters
+
+h_colour = 30;
+h_space = 30;
+num_nbr = 1000;
+num_iter = 10;
+
+fprintf('Tuned Gaussian kernel bandwidth for the color feature\n');
+h_colour
+fprintf('Tuned Gaussian kernel bandwidth for the spatial feature\n');
+h_space
+fprintf('Tuned number of iterations\n');
+num_iter
+
+%% Segmentation
+I_out = myMeanShiftSegmentation(I_downsample, h_colour, h_space, num_nbr, num_iter);
+
+%% Displaying
+figure("position",[100, 100, 1200, 2000]);
+
+% Displaying the Original Image
+subplot(1,2,1),imshow(mat2gray(I_downsample));
+title('Original Image (downsampled)');
+axis on;
+colormap(jet(256));
+colorbar;
+
+% Displaying the Filtered Image
+subplot(1,2,2),imshow(I_out);
+title('Segmented Image');
+colormap(jet(256));
+axis on;
+colorbar;
+
+
+toc;
+
+##### SOURCE END #####
+--></body></html>

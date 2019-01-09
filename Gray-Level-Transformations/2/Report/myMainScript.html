@@ -1,0 +1,346 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-08-06"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">MyMainScript</a></li><li><a href="#2">Loading all the images</a></li><li><a href="#3">Problem 2(a) Linear Contrast Stretching</a></li><li><a href="#4">barbara.png</a></li><li><a href="#5">TEM.png</a></li><li><a href="#6">canyon.png</a></li><li><a href="#7">church.png</a></li><li><a href="#8">Problem 2(b) Histogram Equalization (HE)</a></li><li><a href="#9">barbara.png</a></li><li><a href="#10">TEM.png</a></li><li><a href="#11">canyon.png</a></li><li><a href="#12">church.png</a></li><li><a href="#13">Problem 2(c) Histogram Matching (HM)</a></li><li><a href="#14">retina.png</a></li><li><a href="#15">Problem 2(d) Adaptive Histogram Equalization (AHE)</a></li><li><a href="#16">barbara.png</a></li><li><a href="#17">TEM.png</a></li><li><a href="#18">canyon.png</a></li><li><a href="#19">Problem 2(e) Contrast Limited Adaptive Histogram Equalization (AHE)</a></li><li><a href="#20">barbara.png</a></li><li><a href="#21">TEM.png</a></li><li><a href="#22">canyon.png</a></li></ul></div><h2 id="1">MyMainScript</h2><pre class="codeinput">tic;
+</pre><h2 id="2">Loading all the images</h2><pre class="codeinput">im1 = imread(<span class="string">'../data/barbara.png'</span>);
+im2 = imread(<span class="string">'../data/TEM.png'</span>);
+im3 = imread(<span class="string">'../data/canyon.png'</span>);
+im4 = imread(<span class="string">'../data/retina.png'</span>);
+im5 = imread(<span class="string">'../data/church.png'</span>);
+im4_input = imread(<span class="string">'../data/retina.png'</span>);
+im4_input_mask = imread(<span class="string">'../data/retinaMask.png'</span>);
+im4_ref = imread(<span class="string">'../data/retinaRef.png'</span>);
+im4_ref_mask = imread(<span class="string">'../data/retinaRefMask.png'</span>);
+</pre><h2 id="3">Problem 2(a) Linear Contrast Stretching</h2><h2 id="4">barbara.png</h2><pre class="codeinput">im_r = myLinearContrastStretching(im1);
+printImage(im2double(im1), <span class="string">'Original Image'</span>);
+printImage(im_r, <span class="string">'Linear Contrast Stretching output of Image'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2 id="5">TEM.png</h2><pre class="codeinput">im_r = myLinearContrastStretching(im2);
+printImage(im2double(im2), <span class="string">'Original Image'</span>);
+printImage(im_r, <span class="string">'Linear Contrast Stretching output of Image'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2 id="6">canyon.png</h2><pre class="codeinput">im_r = myLinearContrastStretching(im3);
+printImage(im2double(im3), <span class="string">'Original Image'</span>);
+printImage(im_r, <span class="string">'Linear Contrast Stretching output of Image'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2 id="7">church.png</h2><pre class="codeinput">im_r = myLinearContrastStretching(im5);
+printImage(im2double(im5), <span class="string">'Original Image'</span>);
+printImage(im_r, <span class="string">'Linear Contrast Stretching output of Image'</span>);
+
+<span class="comment">% The formula used for the linear function for the Linear Contrast Stretching is</span>
+<span class="comment">% I_out = 255 * ((I_in - I_min) / (I_max - I_min))</span>
+<span class="comment">% where,</span>
+<span class="comment">% I_in = input intensity for a pixel in image</span>
+<span class="comment">% I_min = minimum pixel intensity in the complete image</span>
+<span class="comment">% I_max = maximum pixel intensity in the complete image</span>
+<span class="comment">% I_out = output intensity for a pixel in image</span>
+<span class="comment">%</span>
+<span class="comment">% After applying constrast stretching on image 5, there is no enhancement in image contrast.</span>
+<span class="comment">% This is because the minimum and maximum pixel intensity values are already 0 and 255 respectively for each of the R,G and B channels.</span>
+<span class="comment">% Thus, there is no scope for any linear stretching and thus no contrast enhacement is observed. Thus contrast stretching isn't effective for image 5.</span>
+</pre><img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <h2 id="8">Problem 2(b) Histogram Equalization (HE)</h2><h2 id="9">barbara.png</h2><pre class="codeinput">im_r = myHE(im1);
+printImage(im2double(im1), <span class="string">'Original Image'</span>);
+printImage(im_r, <span class="string">'Histogram Equalized (HE) output of Image'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <h2 id="10">TEM.png</h2><pre class="codeinput">im_r = myHE(im2);
+printImage(im2double(im2), <span class="string">'Original Image'</span>);
+printImage(im_r, <span class="string">'Histogram Equalized (HE) output of Image'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_12.png" alt=""> <h2 id="11">canyon.png</h2><pre class="codeinput">im_r = myHE(im3);
+printImage(im2double(im3), <span class="string">'Original Image'</span>);
+printImage(im_r, <span class="string">'Histogram Equalized (HE) output of Image'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_13.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_14.png" alt=""> <h2 id="12">church.png</h2><pre class="codeinput">im_r = myHE(im5);
+printImage(im2double(im5), <span class="string">'Original Image'</span>);
+printImage(im_r, <span class="string">'Histogram Equalized (HE) output of Image'</span>);
+
+<span class="comment">% After applying Histogram Equalization on image 5, we get significant contrast enhacement in the image.</span>
+<span class="comment">% The church and other buildings which were darker before, now become clearly and distinctly visible and their features are also more clearly observable as they become lighter due to enhacement in contrast of the image.</span>
+<span class="comment">% Similarly, the bricks on the pavement are more clearly observable now with improved contrast. However, the blue colour of the sky becomes lighter after HE.</span>
+</pre><img vspace="5" hspace="5" src="myMainScript_15.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_16.png" alt=""> <h2 id="13">Problem 2(c) Histogram Matching (HM)</h2><h2 id="14">retina.png</h2><pre class="codeinput">im_r1 = myHM(im4_input, im4_input_mask, im4_ref, im4_ref_mask);
+im_r2 = myHE_with_mask(im4_input, im4_input_mask);
+printImage(im2double(im4_input), <span class="string">'Original Image'</span>);
+printImage(im_r1, <span class="string">'Histogram Matched (HM) output of Image'</span>);
+printImage(im_r2, <span class="string">'Histogram Equalized (HE) output of Image'</span>);
+
+<span class="comment">% When we apply histogram matching to image 4, we observe that image contrast gets significantly enhanced.</span>
+<span class="comment">% The nerves in the image looks faded, the black spot in the center of the image looks faded and lighter, and the rest of the image looks brighter then before.</span>
+<span class="comment">% The net result is that the image contrast is enhanced, the input image which is dark and dull become bright and contrasted after HM.</span>
+<span class="comment">%</span>
+<span class="comment">% When we apply HE to image 4, we get a highly discoloured image as output.</span>
+<span class="comment">% The eye becomes bluish in colour and thus the output quality is deteriorated.</span>
+<span class="comment">% Although this image has an enhanced contrast, the image quality has suffered due to discolouration to shades of blue.</span>
+</pre><img vspace="5" hspace="5" src="myMainScript_17.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_18.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_19.png" alt=""> <h2 id="15">Problem 2(d) Adaptive Histogram Equalization (AHE)</h2><h2 id="16">barbara.png</h2><pre class="codeinput">printImage(im2double(im1), <span class="string">'Original Image'</span>);
+
+im_r = myAHE(im1,225); <span class="comment">% tuned window size</span>
+printImage(im_r, <span class="string">'AHE with window size=225 (tuned)'</span>);
+
+im_r = myAHE(im1,451); <span class="comment">% larger window size</span>
+printImage(im_r, <span class="string">'AHE with window size=451 (larger)'</span>);
+
+im_r = myAHE(im1,99); <span class="comment">% smaller window size</span>
+printImage(im_r, <span class="string">'AHE with window size=99 (smaller)'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_20.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_21.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_22.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_23.png" alt=""> <h2 id="17">TEM.png</h2><pre class="codeinput">printImage(im2double(im2), <span class="string">'Original Image'</span>);
+
+im_r = myAHE(im2,201); <span class="comment">% tuned window size</span>
+printImage(im_r, <span class="string">'AHE with window size=201 (tuned)'</span>);
+
+im_r = myAHE(im2,401); <span class="comment">% larger window size</span>
+printImage(im_r, <span class="string">'AHE with window size=401 (larger)'</span>);
+
+im_r = myAHE(im2,99); <span class="comment">% smaller window size</span>
+printImage(im_r, <span class="string">'AHE with window size=99 (smaller)'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_24.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_25.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_26.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_27.png" alt=""> <h2 id="18">canyon.png</h2><pre class="codeinput">printImage(im2double(im3), <span class="string">'Original Image'</span>);
+
+im_r = myAHE(im3,151); <span class="comment">% tuned window size</span>
+printImage(im_r, <span class="string">'AHE with window size=151 (tuned)'</span>);
+
+im_r = myAHE(im3,301); <span class="comment">% larger window size</span>
+printImage(im_r, <span class="string">'AHE with window size=301 (larger)'</span>);
+
+im_r = myAHE(im3,51); <span class="comment">% smaller window size</span>
+printImage(im_r, <span class="string">'AHE with window size=51 (smaller)'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_28.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_29.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_30.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_31.png" alt=""> <h2 id="19">Problem 2(e) Contrast Limited Adaptive Histogram Equalization (AHE)</h2><h2 id="20">barbara.png</h2><pre class="codeinput">clahe_image1 = myCLAHE(im1, 225, 0.008);
+clahe_image1_ = myCLAHE(im1, 225, 0.004);
+printImage(im2double(im1),<span class="string">'Original Image : barbara.png'</span>);
+printImage(clahe_image1,<span class="string">'CLAHE with window size = 225 and threshold = 0.008'</span>);
+printImage(clahe_image1_,<span class="string">'CLAHE with window size = 225 and threshold = 0.004'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_32.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_33.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_34.png" alt=""> <h2 id="21">TEM.png</h2><pre class="codeinput">clahe_image2 = myCLAHE(im2, 201, 0.008);
+clahe_image2_ = myCLAHE(im2, 201, 0.004);
+printImage(im2double(im2),<span class="string">'Original Image : TEM.png'</span>);
+printImage(clahe_image2,<span class="string">'CLAHE with window size = 201 and threshold = 0.008'</span>);
+printImage(clahe_image2_,<span class="string">'CLAHE with window size = 201 and threshold = 0.004'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_35.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_36.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_37.png" alt=""> <h2 id="22">canyon.png</h2><pre class="codeinput">clahe_image3 = myCLAHE(im3, 155, 0.01);
+clahe_image3_ = myCLAHE(im3, 201, 0.004);
+printImage(im2double(im3),<span class="string">'Original Image : canyon.png'</span>);
+printImage(clahe_image3,<span class="string">'CLAHE with window size = 155 and threshold = 0.01'</span>);
+printImage(clahe_image3_,<span class="string">'CLAHE with window size = 155 and threshold = 0.005'</span>);
+
+
+toc;
+</pre><pre class="codeoutput">Elapsed time is 710.522861 seconds.
+</pre><img vspace="5" hspace="5" src="myMainScript_38.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_39.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_40.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% MyMainScript
+
+tic;
+
+%% Loading all the images
+
+im1 = imread('../data/barbara.png');
+im2 = imread('../data/TEM.png');
+im3 = imread('../data/canyon.png');
+im4 = imread('../data/retina.png');
+im5 = imread('../data/church.png');
+im4_input = imread('../data/retina.png');
+im4_input_mask = imread('../data/retinaMask.png');
+im4_ref = imread('../data/retinaRef.png');
+im4_ref_mask = imread('../data/retinaRefMask.png');
+
+%% Problem 2(a) Linear Contrast Stretching
+
+%% barbara.png
+im_r = myLinearContrastStretching(im1);
+printImage(im2double(im1), 'Original Image');
+printImage(im_r, 'Linear Contrast Stretching output of Image');
+
+%% TEM.png
+im_r = myLinearContrastStretching(im2);
+printImage(im2double(im2), 'Original Image');
+printImage(im_r, 'Linear Contrast Stretching output of Image');
+
+%% canyon.png
+im_r = myLinearContrastStretching(im3);
+printImage(im2double(im3), 'Original Image');
+printImage(im_r, 'Linear Contrast Stretching output of Image');
+
+%% church.png
+im_r = myLinearContrastStretching(im5);
+printImage(im2double(im5), 'Original Image');
+printImage(im_r, 'Linear Contrast Stretching output of Image');
+
+% The formula used for the linear function for the Linear Contrast Stretching is 
+% I_out = 255 * ((I_in - I_min) / (I_max - I_min))
+% where,
+% I_in = input intensity for a pixel in image
+% I_min = minimum pixel intensity in the complete image
+% I_max = maximum pixel intensity in the complete image
+% I_out = output intensity for a pixel in image
+% 
+% After applying constrast stretching on image 5, there is no enhancement in image contrast. 
+% This is because the minimum and maximum pixel intensity values are already 0 and 255 respectively for each of the R,G and B channels.
+% Thus, there is no scope for any linear stretching and thus no contrast enhacement is observed. Thus contrast stretching isn't effective for image 5.
+
+
+%% Problem 2(b) Histogram Equalization (HE)
+
+%% barbara.png
+im_r = myHE(im1);
+printImage(im2double(im1), 'Original Image');
+printImage(im_r, 'Histogram Equalized (HE) output of Image');
+
+%% TEM.png
+im_r = myHE(im2);
+printImage(im2double(im2), 'Original Image');
+printImage(im_r, 'Histogram Equalized (HE) output of Image');
+
+%% canyon.png
+im_r = myHE(im3);
+printImage(im2double(im3), 'Original Image');
+printImage(im_r, 'Histogram Equalized (HE) output of Image');
+
+%% church.png
+im_r = myHE(im5);
+printImage(im2double(im5), 'Original Image');
+printImage(im_r, 'Histogram Equalized (HE) output of Image');
+
+% After applying Histogram Equalization on image 5, we get significant contrast enhacement in the image. 
+% The church and other buildings which were darker before, now become clearly and distinctly visible and their features are also more clearly observable as they become lighter due to enhacement in contrast of the image. 
+% Similarly, the bricks on the pavement are more clearly observable now with improved contrast. However, the blue colour of the sky becomes lighter after HE.
+
+
+%% Problem 2(c) Histogram Matching (HM)
+
+%% retina.png
+im_r1 = myHM(im4_input, im4_input_mask, im4_ref, im4_ref_mask);
+im_r2 = myHE_with_mask(im4_input, im4_input_mask);
+printImage(im2double(im4_input), 'Original Image');
+printImage(im_r1, 'Histogram Matched (HM) output of Image');
+printImage(im_r2, 'Histogram Equalized (HE) output of Image');
+
+% When we apply histogram matching to image 4, we observe that image contrast gets significantly enhanced. 
+% The nerves in the image looks faded, the black spot in the center of the image looks faded and lighter, and the rest of the image looks brighter then before. 
+% The net result is that the image contrast is enhanced, the input image which is dark and dull become bright and contrasted after HM.
+% 
+% When we apply HE to image 4, we get a highly discoloured image as output. 
+% The eye becomes bluish in colour and thus the output quality is deteriorated. 
+% Although this image has an enhanced contrast, the image quality has suffered due to discolouration to shades of blue.
+
+
+%% Problem 2(d) Adaptive Histogram Equalization (AHE)
+
+%% barbara.png
+printImage(im2double(im1), 'Original Image');
+
+im_r = myAHE(im1,225); % tuned window size
+printImage(im_r, 'AHE with window size=225 (tuned)');
+
+im_r = myAHE(im1,451); % larger window size
+printImage(im_r, 'AHE with window size=451 (larger)');
+
+im_r = myAHE(im1,99); % smaller window size
+printImage(im_r, 'AHE with window size=99 (smaller)');
+
+%% TEM.png
+printImage(im2double(im2), 'Original Image');
+
+im_r = myAHE(im2,201); % tuned window size
+printImage(im_r, 'AHE with window size=201 (tuned)');
+
+im_r = myAHE(im2,401); % larger window size
+printImage(im_r, 'AHE with window size=401 (larger)');
+
+im_r = myAHE(im2,99); % smaller window size
+printImage(im_r, 'AHE with window size=99 (smaller)');
+
+%% canyon.png
+printImage(im2double(im3), 'Original Image');
+
+im_r = myAHE(im3,151); % tuned window size
+printImage(im_r, 'AHE with window size=151 (tuned)');
+
+im_r = myAHE(im3,301); % larger window size
+printImage(im_r, 'AHE with window size=301 (larger)');
+
+im_r = myAHE(im3,51); % smaller window size
+printImage(im_r, 'AHE with window size=51 (smaller)');
+
+
+%% Problem 2(e) Contrast Limited Adaptive Histogram Equalization (AHE)
+
+%% barbara.png
+clahe_image1 = myCLAHE(im1, 225, 0.008);
+clahe_image1_ = myCLAHE(im1, 225, 0.004);
+printImage(im2double(im1),'Original Image : barbara.png');
+printImage(clahe_image1,'CLAHE with window size = 225 and threshold = 0.008');
+printImage(clahe_image1_,'CLAHE with window size = 225 and threshold = 0.004');
+
+
+%% TEM.png
+clahe_image2 = myCLAHE(im2, 201, 0.008);
+clahe_image2_ = myCLAHE(im2, 201, 0.004);
+printImage(im2double(im2),'Original Image : TEM.png');
+printImage(clahe_image2,'CLAHE with window size = 201 and threshold = 0.008');
+printImage(clahe_image2_,'CLAHE with window size = 201 and threshold = 0.004');
+
+%% canyon.png
+clahe_image3 = myCLAHE(im3, 155, 0.01);
+clahe_image3_ = myCLAHE(im3, 201, 0.004);
+printImage(im2double(im3),'Original Image : canyon.png');
+printImage(clahe_image3,'CLAHE with window size = 155 and threshold = 0.01');
+printImage(clahe_image3_,'CLAHE with window size = 155 and threshold = 0.005');
+
+
+toc;
+
+##### SOURCE END #####
+--></body></html>
