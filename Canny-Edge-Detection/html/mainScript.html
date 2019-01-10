@@ -1,0 +1,435 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>mainScript</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-01-10"><meta name="DC.source" content="mainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Loading, displaying and smoothening the image</a></li><li><a href="#2">1 - Robert Operator Edge Detection</a></li><li><a href="#3">2 - Prewitt Operator Edge Detection</a></li><li><a href="#4">3 - Sobel Operator Edge Detection</a></li></ul></div><h2 id="1">Loading, displaying and smoothening the image</h2><pre class="codeinput">im = single(rgb2gray(imread(<span class="string">'rice.png'</span>)));
+imagesc(im);
+daspect([1 1 1]);
+axis <span class="string">tight</span>;
+colormap(<span class="string">'gray'</span>);
+title(<span class="string">'Original Image'</span>);
+
+smooth_filter = fspecial(<span class="string">'gaussian'</span>, 2*round(3*1) + 1, 1);
+im = imfilter(im, smooth_filter);
+</pre><img vspace="5" hspace="5" src="mainScript_01.png" alt=""> <h2 id="2">1 - Robert Operator Edge Detection</h2><pre class="codeinput">opX = [1 0; 0 -1];
+opY = [0 1; -1 0];
+
+imX = imfilter(im, opX);
+imY = imfilter(im, opY);
+
+grad = sqrt(imX.^2 + imY.^2);
+angle = atan2(imY,imX)*180/pi;
+
+<span class="comment">% non-maximal suppression</span>
+[h,w] = size(im);
+g_m = zeros(size(grad));
+<span class="keyword">for</span> i=2:h-1
+    <span class="keyword">for</span> j=2:w-1
+        <span class="keyword">if</span> (angle(i,j)&gt;=-22.5 &amp;&amp; angle(i,j)&lt;=22.5) || (angle(i,j)&lt;-157.5 &amp;&amp; angle(i,j)&gt;=-180)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i,j+1)) &amp;&amp; (grad(i,j) &gt;= grad(i,j-1))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> (angle(i,j)&gt;=22.5 &amp;&amp; angle(i,j)&lt;=67.5) || (angle(i,j)&lt;-112.5 &amp;&amp; angle(i,j)&gt;=-157.5)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i+1,j+1)) &amp;&amp; (grad(i,j) &gt;= grad(i-1,j-1))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> (angle(i,j)&gt;=67.5 &amp;&amp; angle(i,j)&lt;=112.5) || (angle(i,j)&lt;-67.5 &amp;&amp; angle(i,j)&gt;=-112.5)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i+1,j)) &amp;&amp; (grad(i,j) &gt;= grad(i-1,j))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> (angle(i,j)&gt;=112.5 &amp;&amp; angle(i,j)&lt;=157.5) || (angle(i,j)&lt;-22.5 &amp;&amp; angle(i,j)&gt;=-67.5)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i+1,j-1)) &amp;&amp; (grad(i,j) &gt;= grad(i-1,j+1))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+max_g_m = max(g_m(:));
+
+<span class="comment">% Hysteresis Thresholding</span>
+th_low = 0.01*max_g_m;
+th_high = 0.1*max_g_m;
+
+edges = g_m&gt;th_high;
+
+<span class="keyword">for</span> i=2:h-1
+    <span class="keyword">for</span> j=2:w-1
+        <span class="keyword">if</span> (g_m(i,j)&gt;th_low) &amp;&amp; (g_m(i+1,j)&gt;th_high || g_m(i-1,j)&gt;th_high || g_m(i,j+1)&gt;th_high || g_m(i,j-1)&gt;th_high || g_m(i-1, j-1)&gt;th_high || g_m(i-1, j+1)&gt;th_high || g_m(i+1, j+1)&gt;th_high || g_m(i+1, j-1)&gt;th_high)
+            edges(i,j) = 1;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+figure, imagesc(edges);
+daspect([1 1 1]);
+axis <span class="string">tight</span>;
+colormap(<span class="string">'gray'</span>);
+title(<span class="string">'Edge detection using Robert operator'</span>);
+</pre><img vspace="5" hspace="5" src="mainScript_02.png" alt=""> <h2 id="3">2 - Prewitt Operator Edge Detection</h2><pre class="codeinput">opX = [1 0 -1; 1 0 -1; 1 0 -1];
+opY = [1 1 1; 0 0 0; -1 -1 -1];
+
+imX = imfilter(im, opX);
+imY = imfilter(im, opY);
+
+grad = sqrt(single(imX.^2 + imY.^2));
+angle = atan2(imY,imX)*180/pi;
+
+<span class="comment">% non-maximal suppression</span>
+[h,w] = size(im);
+g_m = zeros(size(grad));
+<span class="keyword">for</span> i=2:h-1
+    <span class="keyword">for</span> j=2:w-1
+        <span class="keyword">if</span> (angle(i,j)&gt;=-22.5 &amp;&amp; angle(i,j)&lt;=22.5) || (angle(i,j)&lt;-157.5 &amp;&amp; angle(i,j)&gt;=-180)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i,j+1)) &amp;&amp; (grad(i,j) &gt;= grad(i,j-1))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> (angle(i,j)&gt;=22.5 &amp;&amp; angle(i,j)&lt;=67.5) || (angle(i,j)&lt;-112.5 &amp;&amp; angle(i,j)&gt;=-157.5)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i+1,j+1)) &amp;&amp; (grad(i,j) &gt;= grad(i-1,j-1))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> (angle(i,j)&gt;=67.5 &amp;&amp; angle(i,j)&lt;=112.5) || (angle(i,j)&lt;-67.5 &amp;&amp; angle(i,j)&gt;=-112.5)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i+1,j)) &amp;&amp; (grad(i,j) &gt;= grad(i-1,j))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> (angle(i,j)&gt;=112.5 &amp;&amp; angle(i,j)&lt;=157.5) || (angle(i,j)&lt;-22.5 &amp;&amp; angle(i,j)&gt;=-67.5)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i+1,j-1)) &amp;&amp; (grad(i,j) &gt;= grad(i-1,j+1))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+max_g_m = max(g_m(:));
+
+<span class="comment">% Hysteresis Thresholding</span>
+th_low = 0.01*max_g_m;
+th_high = 0.1*max_g_m;
+
+edges = g_m&gt;th_high;
+
+<span class="keyword">for</span> i=2:h-1
+    <span class="keyword">for</span> j=2:w-1
+        <span class="keyword">if</span> (g_m(i,j)&gt;th_low) &amp;&amp; (g_m(i+1,j)&gt;th_high || g_m(i-1,j)&gt;th_high || g_m(i,j+1)&gt;th_high || g_m(i,j-1)&gt;th_high || g_m(i-1, j-1)&gt;th_high || g_m(i-1, j+1)&gt;th_high || g_m(i+1, j+1)&gt;th_high || g_m(i+1, j-1)&gt;th_high)
+            edges(i,j) = 1;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+figure, imagesc(edges);
+
+daspect([1 1 1]);
+axis <span class="string">tight</span>;
+colormap(<span class="string">'gray'</span>);
+title(<span class="string">'Edge detection using Prewitt operator'</span>);
+</pre><img vspace="5" hspace="5" src="mainScript_03.png" alt=""> <h2 id="4">3 - Sobel Operator Edge Detection</h2><pre class="codeinput">opX = [1 0 -1; 2 0 -2; 1 0 -1];
+opY = [1 2 1; 0 0 0; -1 -2 -1];
+
+imX = imfilter(im, opX);
+imY = imfilter(im, opY);
+
+grad = sqrt(single(imX.^2 + imY.^2));
+angle = atan2(imY,imX)*180/pi;
+
+<span class="comment">% non-maximal suppression</span>
+[h,w] = size(im);
+g_m = zeros(size(grad));
+<span class="keyword">for</span> i=2:h-1
+    <span class="keyword">for</span> j=2:w-1
+        <span class="keyword">if</span> (angle(i,j)&gt;=-22.5 &amp;&amp; angle(i,j)&lt;=22.5) || (angle(i,j)&lt;-157.5 &amp;&amp; angle(i,j)&gt;=-180)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i,j+1)) &amp;&amp; (grad(i,j) &gt;= grad(i,j-1))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> (angle(i,j)&gt;=22.5 &amp;&amp; angle(i,j)&lt;=67.5) || (angle(i,j)&lt;-112.5 &amp;&amp; angle(i,j)&gt;=-157.5)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i+1,j+1)) &amp;&amp; (grad(i,j) &gt;= grad(i-1,j-1))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> (angle(i,j)&gt;=67.5 &amp;&amp; angle(i,j)&lt;=112.5) || (angle(i,j)&lt;-67.5 &amp;&amp; angle(i,j)&gt;=-112.5)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i+1,j)) &amp;&amp; (grad(i,j) &gt;= grad(i-1,j))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> (angle(i,j)&gt;=112.5 &amp;&amp; angle(i,j)&lt;=157.5) || (angle(i,j)&lt;-22.5 &amp;&amp; angle(i,j)&gt;=-67.5)
+            <span class="keyword">if</span> (grad(i,j) &gt;= grad(i+1,j-1)) &amp;&amp; (grad(i,j) &gt;= grad(i-1,j+1))
+                g_m(i,j)= grad(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+max_g_m = max(g_m(:));
+
+<span class="comment">% Hysteresis Thresholding</span>
+th_low = 0.01*max_g_m;
+th_high = 0.1*max_g_m;
+
+edges = g_m&gt;th_high;
+
+<span class="keyword">for</span> i=2:h-1
+    <span class="keyword">for</span> j=2:w-1
+        <span class="keyword">if</span> (g_m(i,j)&gt;th_low) &amp;&amp; (g_m(i+1,j)&gt;th_high || g_m(i-1,j)&gt;th_high || g_m(i,j+1)&gt;th_high || g_m(i,j-1)&gt;th_high || g_m(i-1, j-1)&gt;th_high || g_m(i-1, j+1)&gt;th_high || g_m(i+1, j+1)&gt;th_high || g_m(i+1, j-1)&gt;th_high)
+            edges(i,j) = 1;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+figure, imagesc(edges);
+
+daspect([1 1 1]);
+axis <span class="string">tight</span>;
+colormap(<span class="string">'gray'</span>);
+title(<span class="string">'Edge detection using Sobel operator'</span>);
+</pre><img vspace="5" hspace="5" src="mainScript_04.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Loading, displaying and smoothening the image
+
+im = single(rgb2gray(imread('rice.png')));
+imagesc(im);
+daspect([1 1 1]);
+axis tight;
+colormap('gray');
+title('Original Image');
+
+smooth_filter = fspecial('gaussian', 2*round(3*1) + 1, 1);
+im = imfilter(im, smooth_filter);
+
+%% 1 - Robert Operator Edge Detection
+
+opX = [1 0; 0 -1];
+opY = [0 1; -1 0];
+
+imX = imfilter(im, opX);
+imY = imfilter(im, opY);
+
+grad = sqrt(imX.^2 + imY.^2);
+angle = atan2(imY,imX)*180/pi;
+
+% non-maximal suppression
+[h,w] = size(im);
+g_m = zeros(size(grad));
+for i=2:h-1
+    for j=2:w-1       
+        if (angle(i,j)>=-22.5 && angle(i,j)<=22.5) || (angle(i,j)<-157.5 && angle(i,j)>=-180)
+            if (grad(i,j) >= grad(i,j+1)) && (grad(i,j) >= grad(i,j-1))
+                g_m(i,j)= grad(i,j);
+            end
+        elseif (angle(i,j)>=22.5 && angle(i,j)<=67.5) || (angle(i,j)<-112.5 && angle(i,j)>=-157.5)
+            if (grad(i,j) >= grad(i+1,j+1)) && (grad(i,j) >= grad(i-1,j-1))
+                g_m(i,j)= grad(i,j);
+            end
+        elseif (angle(i,j)>=67.5 && angle(i,j)<=112.5) || (angle(i,j)<-67.5 && angle(i,j)>=-112.5)
+            if (grad(i,j) >= grad(i+1,j)) && (grad(i,j) >= grad(i-1,j))
+                g_m(i,j)= grad(i,j);
+            end
+        elseif (angle(i,j)>=112.5 && angle(i,j)<=157.5) || (angle(i,j)<-22.5 && angle(i,j)>=-67.5)
+            if (grad(i,j) >= grad(i+1,j-1)) && (grad(i,j) >= grad(i-1,j+1))
+                g_m(i,j)= grad(i,j);
+            end
+        end
+    end
+end
+
+max_g_m = max(g_m(:));
+
+% Hysteresis Thresholding
+th_low = 0.01*max_g_m;
+th_high = 0.1*max_g_m;
+
+edges = g_m>th_high;
+
+for i=2:h-1
+    for j=2:w-1 
+        if (g_m(i,j)>th_low) && (g_m(i+1,j)>th_high || g_m(i-1,j)>th_high || g_m(i,j+1)>th_high || g_m(i,j-1)>th_high || g_m(i-1, j-1)>th_high || g_m(i-1, j+1)>th_high || g_m(i+1, j+1)>th_high || g_m(i+1, j-1)>th_high)
+            edges(i,j) = 1;
+        end
+    end
+end
+
+figure, imagesc(edges);
+daspect([1 1 1]);
+axis tight;
+colormap('gray');
+title('Edge detection using Robert operator');
+
+%% 2 - Prewitt Operator Edge Detection
+
+opX = [1 0 -1; 1 0 -1; 1 0 -1];
+opY = [1 1 1; 0 0 0; -1 -1 -1];
+
+imX = imfilter(im, opX);
+imY = imfilter(im, opY);
+
+grad = sqrt(single(imX.^2 + imY.^2));
+angle = atan2(imY,imX)*180/pi;
+
+% non-maximal suppression
+[h,w] = size(im);
+g_m = zeros(size(grad));
+for i=2:h-1
+    for j=2:w-1       
+        if (angle(i,j)>=-22.5 && angle(i,j)<=22.5) || (angle(i,j)<-157.5 && angle(i,j)>=-180)
+            if (grad(i,j) >= grad(i,j+1)) && (grad(i,j) >= grad(i,j-1))
+                g_m(i,j)= grad(i,j);
+            end
+        elseif (angle(i,j)>=22.5 && angle(i,j)<=67.5) || (angle(i,j)<-112.5 && angle(i,j)>=-157.5)
+            if (grad(i,j) >= grad(i+1,j+1)) && (grad(i,j) >= grad(i-1,j-1))
+                g_m(i,j)= grad(i,j);
+            end
+        elseif (angle(i,j)>=67.5 && angle(i,j)<=112.5) || (angle(i,j)<-67.5 && angle(i,j)>=-112.5)
+            if (grad(i,j) >= grad(i+1,j)) && (grad(i,j) >= grad(i-1,j))
+                g_m(i,j)= grad(i,j);
+            end
+        elseif (angle(i,j)>=112.5 && angle(i,j)<=157.5) || (angle(i,j)<-22.5 && angle(i,j)>=-67.5)
+            if (grad(i,j) >= grad(i+1,j-1)) && (grad(i,j) >= grad(i-1,j+1))
+                g_m(i,j)= grad(i,j);
+            end
+        end
+    end
+end
+
+max_g_m = max(g_m(:));
+
+% Hysteresis Thresholding
+th_low = 0.01*max_g_m;
+th_high = 0.1*max_g_m;
+
+edges = g_m>th_high;
+
+for i=2:h-1
+    for j=2:w-1 
+        if (g_m(i,j)>th_low) && (g_m(i+1,j)>th_high || g_m(i-1,j)>th_high || g_m(i,j+1)>th_high || g_m(i,j-1)>th_high || g_m(i-1, j-1)>th_high || g_m(i-1, j+1)>th_high || g_m(i+1, j+1)>th_high || g_m(i+1, j-1)>th_high)
+            edges(i,j) = 1;
+        end
+    end
+end
+
+figure, imagesc(edges);
+
+daspect([1 1 1]);
+axis tight;
+colormap('gray');
+title('Edge detection using Prewitt operator');
+
+%% 3 - Sobel Operator Edge Detection
+
+opX = [1 0 -1; 2 0 -2; 1 0 -1];
+opY = [1 2 1; 0 0 0; -1 -2 -1];
+
+imX = imfilter(im, opX);
+imY = imfilter(im, opY);
+
+grad = sqrt(single(imX.^2 + imY.^2));
+angle = atan2(imY,imX)*180/pi;
+
+% non-maximal suppression
+[h,w] = size(im);
+g_m = zeros(size(grad));
+for i=2:h-1
+    for j=2:w-1       
+        if (angle(i,j)>=-22.5 && angle(i,j)<=22.5) || (angle(i,j)<-157.5 && angle(i,j)>=-180)
+            if (grad(i,j) >= grad(i,j+1)) && (grad(i,j) >= grad(i,j-1))
+                g_m(i,j)= grad(i,j);
+            end
+        elseif (angle(i,j)>=22.5 && angle(i,j)<=67.5) || (angle(i,j)<-112.5 && angle(i,j)>=-157.5)
+            if (grad(i,j) >= grad(i+1,j+1)) && (grad(i,j) >= grad(i-1,j-1))
+                g_m(i,j)= grad(i,j);
+            end
+        elseif (angle(i,j)>=67.5 && angle(i,j)<=112.5) || (angle(i,j)<-67.5 && angle(i,j)>=-112.5)
+            if (grad(i,j) >= grad(i+1,j)) && (grad(i,j) >= grad(i-1,j))
+                g_m(i,j)= grad(i,j);
+            end
+        elseif (angle(i,j)>=112.5 && angle(i,j)<=157.5) || (angle(i,j)<-22.5 && angle(i,j)>=-67.5)
+            if (grad(i,j) >= grad(i+1,j-1)) && (grad(i,j) >= grad(i-1,j+1))
+                g_m(i,j)= grad(i,j);
+            end
+        end
+    end
+end
+
+max_g_m = max(g_m(:));
+
+% Hysteresis Thresholding
+th_low = 0.01*max_g_m;
+th_high = 0.1*max_g_m;
+
+edges = g_m>th_high;
+
+for i=2:h-1
+    for j=2:w-1 
+        if (g_m(i,j)>th_low) && (g_m(i+1,j)>th_high || g_m(i-1,j)>th_high || g_m(i,j+1)>th_high || g_m(i,j-1)>th_high || g_m(i-1, j-1)>th_high || g_m(i-1, j+1)>th_high || g_m(i+1, j+1)>th_high || g_m(i+1, j-1)>th_high)
+            edges(i,j) = 1;
+        end
+    end
+end
+
+figure, imagesc(edges);
+
+daspect([1 1 1]);
+axis tight;
+colormap('gray');
+title('Edge detection using Sobel operator');
+##### SOURCE END #####
+--></body></html>
